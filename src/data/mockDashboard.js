@@ -1,0 +1,106 @@
+﻿export const dashboardMock = {
+  meta: {
+    propertyName: 'شقق سالي المصيفية الفندقية',
+    lastUpdate: 'اليوم 11:30 صباحاً',
+  },
+  summaryCards: [
+    {
+      id: 'checkout',
+      title: 'تسجيل الخروج',
+      value: 19,
+      icon: 'FiLogOut',
+      accent: '#0ea5e9',
+      badge: { label: '+5 اليوم', positive: true },
+    },
+    {
+      id: 'guests',
+      title: 'الضيوف',
+      value: 19,
+      icon: 'FiUsers',
+      accent: '#6366f1',
+      badge: { label: '+2 هذا الأسبوع', positive: true },
+    },
+    {
+      id: 'messages',
+      title: 'الرسائل',
+      value: 3,
+      icon: 'FiMessageCircle',
+      accent: '#f59e0b',
+      badge: { label: 'جديدة', positive: true },
+    },
+    {
+      id: 'checkin',
+      title: 'تسجيل الدخول',
+      value: 0,
+      icon: 'FiLogIn',
+      accent: '#10b981',
+      badge: { label: 'اليوم', positive: false },
+    },
+    {
+      id: 'favorites',
+      title: 'المفضلة',
+      value: 0,
+      icon: 'FiHeart',
+      accent: '#ef4444',
+    },
+  ],
+  availability: {
+    totalLabel: 'متاحة',
+    totalValue: 11,
+    data: [
+      { name: 'متاحة', value: 11, color: '#22c55e' },
+      { name: 'محجوزة', value: 3, color: '#f97316' },
+      { name: 'مجدولة', value: 3, color: '#6366f1' },
+    ],
+  },
+  unitAnalytics: {
+    weekly: [
+      { name: 'الأحد', weekly: 14, nightly: 6 },
+      { name: 'الاثنين', weekly: 2, nightly: 0 },
+      { name: 'الثلاثاء', weekly: 2, nightly: 0 },
+      { name: 'الأربعاء', weekly: 1, nightly: 0 },
+      { name: 'الخميس', weekly: 6, nightly: 0 },
+      { name: 'الجمعة', weekly: 6, nightly: 0 },
+      { name: 'السبت', weekly: 14, nightly: 0 },
+    ],
+    legend: [
+      { label: 'إجماليات أسبوعية', dataKey: 'weekly', color: '#06b6d4' },
+      { label: 'إجماليات ليلة واحدة', dataKey: 'nightly', color: '#2563eb' },
+    ],
+  },
+  bookingAnalytics: {
+    monthly: [
+      { name: 'يناير', value: 0 },
+      { name: 'فبراير', value: 1 },
+      { name: 'مارس', value: 0 },
+      { name: 'أبريل', value: 0 },
+      { name: 'مايو', value: 0 },
+      { name: 'يونيو', value: 2 },
+      { name: 'يوليو', value: 7 },
+      { name: 'أغسطس', value: 7 },
+      { name: 'سبتمبر', value: 1 },
+      { name: 'أكتوبر', value: 0 },
+      { name: 'نوفمبر', value: 0 },
+      { name: 'ديسمبر', value: 0 },
+    ],
+    total: 22,
+  },
+  bookingStatus: {
+    totalLabel: 'تسجيل الخروج',
+    totalValue: 19,
+    data: [
+      { name: 'تسجيل الخروج', value: 19, color: '#0ea5e9' },
+      { name: 'تسجيل الدخول', value: 0, color: '#f43f5e' },
+      { name: 'إلغاء', value: 0, color: '#f59e0b' },
+    ],
+  },
+  cleanliness: {
+    totalLabel: 'غير نظيفة',
+    totalValue: 7,
+    data: [
+      { name: 'نظيفة', value: 1, color: '#22c55e' },
+      { name: 'غير نظيفة', value: 7, color: '#f59e0b' },
+      { name: 'قيد التنظيف', value: 1, color: '#6366f1' },
+    ],
+  },
+}
