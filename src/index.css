@@ -1,7 +1,7 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap');
 
 :root {
-  font-family: 'Inter', 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Cairo', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
   text-rendering: optimizeLegibility;
@@ -12,14 +12,14 @@
   --hero-breakpoint: 38%;
   --transition-theme: 0.45s ease;
 
-  /* Brand */
+  /* الألوان الرئيسية */
   --color-accent-primary: #0ea5e9;
   --color-accent-secondary: #6366f1;
   --color-accent-strong: #0284c7;
   --color-accent-soft: rgba(14, 165, 233, 0.16);
   --color-brand-contrast: #0f172a;
 
-  /* Text */
+  /* الألوان النصية */
   --color-text: #0f172a;
   --color-text-strong: #0f172a;
   --color-text-on-dark: #e2e8f0;
@@ -30,12 +30,12 @@
   --color-text-secondary: #1e293b;
   --color-text-fade: #6b7280;
 
-  /* Status */
+  /* حالات التنبيه */
   --color-warning: #f97316;
   --color-danger: #ef4444;
   --color-success: #0f766e;
 
-  /* Surfaces */
+  /* الخلفيات والأسطح */
   --color-border: rgba(148, 163, 184, 0.26);
   --color-border-strong: rgba(99, 102, 241, 0.32);
   --card-background: rgba(255, 255, 255, 0.94);
