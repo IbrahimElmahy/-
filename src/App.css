@@ -415,6 +415,80 @@
   gap: 20px;
 }
 
+.topbar__row--mobile {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 18px;
+}
+
+.topbar__mobile-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+
+.topbar__mobile-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-strong);
+}
+
+.topbar__mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.topbar__mobile-tools {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.topbar__quick-actions--mobile {
+  width: 100%;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 18px;
+}
+
+.topbar__round--compact {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+}
+
+.topbar__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: none;
+  background: var(--topbar-button-gradient);
+  color: var(--topbar-text-color);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--topbar-button-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topbar__avatar:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: var(--topbar-button-hover-shadow);
+}
+
+.topbar__avatar:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(148, 163, 255, 0.3), var(--topbar-button-shadow);
+}
+
 .topbar__quick-actions {
   display: flex;
   align-items: center;
@@ -500,6 +574,41 @@
   margin-inline-start: auto;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 18px 28px -20px rgba(15, 23, 42, 0.55);
   transition: width 0.32s ease, background 0.32s ease, border 0.32s ease, box-shadow 0.32s ease, gap 0.24s ease;
+}
+
+.topbar__search--mobile {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 6px;
+  margin-inline-start: 0;
+  background: rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(148, 163, 255, 0.28);
+  box-shadow: none;
+  justify-content: flex-start;
+  gap: 0;
+  transition: width 0.3s ease, background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.topbar__search--mobile.is-open {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.92);
+  border-color: rgba(148, 163, 255, 0.45);
+  box-shadow: 0 22px 42px -32px rgba(15, 23, 42, 0.45);
+  gap: 10px;
+}
+
+.topbar__search--mobile .topbar__search-toggle {
+  width: 36px;
+  margin-right: 0;
+}
+
+.topbar__search--mobile .topbar__shortcut {
+  display: none;
+}
+
+.topbar__search--mobile.is-open .topbar__search-input {
+  margin-inline-start: 6px;
 }
 
 .topbar__search.is-open {
@@ -1107,49 +1216,66 @@
 
   .topbar--hero {
     top: 0;
-    padding: 24px;
-    gap: 20px;
+    padding: 20px 18px;
+    gap: 18px;
   }
 
   .topbar--hero.is-compact,
   .topbar--hero.is-solid {
-  color: var(--color-text-strong);
-  background: var(--topbar-gradient);
-  box-shadow: var(--topbar-shadow);
-  border-bottom-color: var(--color-border);
-  backdrop-filter: blur(24px);
-  border-radius: 28px;
-  top: 14px;
-}
+    color: var(--color-text-strong);
+    background: var(--topbar-gradient);
+    box-shadow: var(--topbar-shadow);
+    border-bottom-color: var(--color-border);
+    backdrop-filter: blur(24px);
+    border-radius: 24px;
+    top: 12px;
+  }
 
-  .topbar__row {
-    flex-direction: column;
-    align-items: flex-start;
+  .topbar__row--mobile {
     gap: 16px;
   }
 
-  .topbar__actions {
+  .topbar__mobile-title {
+    font-size: 18px;
+  }
+
+  .topbar__mobile-actions {
+    gap: 8px;
+  }
+
+  .topbar__mobile-actions .topbar__search--mobile {
+    flex: 0 0 auto;
+  }
+
+  .topbar__mobile-actions .topbar__search--mobile.is-open {
+    flex: 1 1 100%;
+  }
+
+  .topbar__mobile-actions .topbar__round--compact,
+  .topbar__mobile-actions .topbar__avatar {
+    flex-shrink: 0;
+  }
+
+  .topbar__mobile-tools {
+    display: flex;
+  }
+
+  .topbar__quick-actions--mobile {
+    flex-wrap: nowrap;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .topbar__search--mobile {
+    width: 42px;
+    min-width: 42px;
+  }
+
+  .topbar__search--mobile.is-open {
     width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
   }
 
-  .topbar__quick-actions {
-    flex: 1 0 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .topbar__search {
-    order: -1;
-    width: 60px;
-    justify-content: center;
-    margin-inline-start: 0;
-  }
-
-  .topbar__search.is-open {
+  .topbar__search--mobile.is-open .topbar__search-input {
     width: 100%;
   }
 
