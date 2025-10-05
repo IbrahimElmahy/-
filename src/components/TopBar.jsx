@@ -71,6 +71,12 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   }, [isMobile])
 
   useEffect(() => {
+    if (isMobile) {
+      setIsSearchOpen(false)
+    }
+  }, [isMobile])
+
+  useEffect(() => {
     const heroBreak = 38 - scrollProgress * 16
     document.body.style.setProperty('--hero-breakpoint', `${heroBreak}%`)
 
@@ -151,6 +157,15 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
     setIsSettingsOpen((prev) => !prev)
   }, [])
 
+  const handleThemeToggle = useCallback(() => {
+    toggleTheme()
+    setIsSettingsOpen(false)
+  }, [toggleTheme])
+
+  const handleSettingsItemClick = useCallback(() => {
+    setIsSettingsOpen(false)
+  }, [])
+
   const headerClassName = useMemo(() => {
     return [
       'topbar',
@@ -219,15 +234,6 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
               </button>
               <h1 className="topbar__mobile-title">التقرير العام</h1>
               <div className="topbar__mobile-actions">
-                {searchNode}
-                <button
-                  type="button"
-                  className="topbar__round topbar__round--compact"
-                  aria-label={isDark ? 'الوضع الفاتح' : 'الوضع الليلي'}
-                  onClick={toggleTheme}
-                >
-                  {isDark ? <FiSun size={18} /> : <FiMoon size={18} />}
-                </button>
                 <div className="topbar__settings" ref={settingsRef}>
                   <button
                     type="button"
@@ -247,28 +253,82 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
                     className={`topbar__settings-panel${isSettingsOpen ? ' is-visible' : ''}`}
                     role="menu"
                   >
-                    <button type="button" className="topbar__settings-item" role="menuitem" aria-label="اختصارات لوحة التحكم">
-                      <FiGrid size={18} />
-                      <span>اختصارات</span>
-                    </button>
-                    <button type="button" className="topbar__settings-item" role="menuitem" aria-label="الرسائل الواردة">
-                      <FiMessageCircle size={18} />
-                      <span>الرسائل</span>
-                    </button>
-                    <button type="button" className="topbar__settings-item" role="menuitem" aria-label="التنبيهات الجديدة">
-                      <FiBell size={18} />
-                      <span>الإشعارات</span>
-                      <span className="topbar__settings-badge">3</span>
-                    </button>
-                    <button type="button" className="topbar__settings-item" role="menuitem" aria-label="مواعيد التقويم">
-                      <FiCalendar size={18} />
-                      <span>التقويم</span>
-                    </button>
+                    <div className="topbar__settings-group" role="none">
+                      <span className="topbar__settings-title">بحث سريع</span>
+                      <div className="topbar__settings-search">
+                        <FiSearch size={18} aria-hidden="true" />
+                        <input type="search" aria-label="ابحث في النظام" placeholder="ابحث في النظام..." />
+                      </div>
+                    </div>
+                    <div className="topbar__settings-group" role="none">
+                      <span className="topbar__settings-title">إجراءات سريعة</span>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label="اختصارات لوحة التحكم"
+                        onClick={handleSettingsItemClick}
+                      >
+                        <FiGrid size={18} />
+                        <span>اختصارات</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label="الرسائل الواردة"
+                        onClick={handleSettingsItemClick}
+                      >
+                        <FiMessageCircle size={18} />
+                        <span>الرسائل</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label="التنبيهات الجديدة"
+                        onClick={handleSettingsItemClick}
+                      >
+                        <FiBell size={18} />
+                        <span>الإشعارات</span>
+                        <span className="topbar__settings-badge">3</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label="مواعيد التقويم"
+                        onClick={handleSettingsItemClick}
+                      >
+                        <FiCalendar size={18} />
+                        <span>التقويم</span>
+                      </button>
+                    </div>
+                    <div className="topbar__settings-group" role="none">
+                      <span className="topbar__settings-title">المظهر والحساب</span>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label={isDark ? 'التبديل إلى الوضع الفاتح' : 'التبديل إلى الوضع الليلي'}
+                        onClick={handleThemeToggle}
+                      >
+                        {isDark ? <FiSun size={18} /> : <FiMoon size={18} />}
+                        <span>{isDark ? 'الوضع الفاتح' : 'الوضع الليلي'}</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label="الملف الشخصي"
+                        onClick={handleSettingsItemClick}
+                      >
+                        <FiUser size={18} />
+                        <span>حسابي</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <button type="button" className="topbar__avatar" aria-label="الملف الشخصي">
-                  <FiUser size={18} />
-                </button>
               </div>
             </div>
           </>
