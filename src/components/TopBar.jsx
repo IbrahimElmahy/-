@@ -50,17 +50,17 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    const mediaQuery = window.matchMedia('(max-width: 768px)')
-
-    const updateMatches = () => {
-      setIsMobile(mediaQuery.matches)
+    const updateLayout = () => {
+      const width = window.innerWidth
+      setIsCompactLayout(width <= 1200)
+      setIsPhoneLayout(width <= 768)
     }
 
-    updateMatches()
-    mediaQuery.addEventListener('change', updateMatches)
+    updateLayout()
+    window.addEventListener('resize', updateLayout)
 
     return () => {
-      mediaQuery.removeEventListener('change', updateMatches)
+      window.removeEventListener('resize', updateLayout)
     }
   }, [])
 
@@ -183,11 +183,12 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
     return [
       'topbar__search',
       isSearchOpen ? 'is-open' : '',
-      isMobile ? 'topbar__search--mobile' : '',
+      isPhoneLayout ? 'topbar__search--mobile' : '',
+      !isPhoneLayout && isCompactLayout ? 'topbar__search--tablet' : '',
     ]
       .filter(Boolean)
       .join(' ')
-  }, [isMobile, isSearchOpen])
+  }, [isCompactLayout, isPhoneLayout, isSearchOpen])
 
   const searchNode = (
     <div className={searchClassName}>
@@ -213,13 +214,23 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
     </div>
   )
 
+  const rowClassName = useMemo(() => {
+    return [
+      'topbar__row',
+      isCompactLayout ? 'topbar__row--compact' : '',
+      isPhoneLayout ? 'topbar__row--mobile' : '',
+    ]
+      .filter(Boolean)
+      .join(' ')
+  }, [isCompactLayout, isPhoneLayout])
+
   return (
     <header className={headerClassName} style={{ '--scroll-progress': scrollProgress }}>
       <div className="topbar__progress" aria-hidden="true">
         <span style={{ transform: `scaleX(${progressScale})` }} />
       </div>
-      <div className={`topbar__row${isMobile ? ' topbar__row--mobile' : ''}`}>
-        {isMobile ? (
+      <div className={rowClassName}>
+        {isCompactLayout ? (
           <>
             <div className="topbar__mobile-bar">
               <button
