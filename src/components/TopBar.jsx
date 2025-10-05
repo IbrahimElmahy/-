@@ -21,6 +21,8 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   const [isCompact, setIsCompact] = useState(false)
   const [isSolid, setIsSolid] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isCompactLayout, setIsCompactLayout] = useState(false)
+  const [isPhoneLayout, setIsPhoneLayout] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
@@ -50,21 +52,31 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    const mediaQuery = window.matchMedia('(max-width: 768px)')
-
-    const updateMatches = () => {
-      setIsMobile(mediaQuery.matches)
+    const updateLayout = () => {
+      const width = window.innerWidth
+      setIsCompactLayout(width <= 1200)
+      setIsPhoneLayout(width <= 768)
     }
 
-    updateMatches()
-    mediaQuery.addEventListener('change', updateMatches)
+    updateLayout()
+    window.addEventListener('resize', updateLayout)
 
     return () => {
-      mediaQuery.removeEventListener('change', updateMatches)
+      window.removeEventListener('resize', updateLayout)
     }
   }, [])
 
   useEffect(() => {
+    if (!isCompactLayout) {
+      setIsSettingsOpen(false)
+    }
+  }, [isCompactLayout])
+
+  useEffect(() => {
+    if (isPhoneLayout) {
+      setIsSearchOpen(false)
+    }
+  }, [isPhoneLayout])
     if (!isMobile) {
       setIsSettingsOpen(false)
     }
@@ -183,11 +195,12 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
     return [
       'topbar__search',
       isSearchOpen ? 'is-open' : '',
-      isMobile ? 'topbar__search--mobile' : '',
+      isPhoneLayout ? 'topbar__search--mobile' : '',
+      !isPhoneLayout && isCompactLayout ? 'topbar__search--tablet' : '',
     ]
       .filter(Boolean)
       .join(' ')
-  }, [isMobile, isSearchOpen])
+  }, [isCompactLayout, isPhoneLayout, isSearchOpen])
 
   const searchNode = (
     <div className={searchClassName}>
@@ -213,14 +226,29 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
     </div>
   )
 
+  const rowClassName = useMemo(() => {
+    return [
+      'topbar__row',
+      isCompactLayout ? 'topbar__row--compact' : '',
+      isPhoneLayout ? 'topbar__row--mobile' : '',
+    ]
+      .filter(Boolean)
+      .join(' ')
+  }, [isCompactLayout, isPhoneLayout])
+
   return (
     <header className={headerClassName} style={{ '--scroll-progress': scrollProgress }}>
       <div className="topbar__progress" aria-hidden="true">
         <span style={{ transform: `scaleX(${progressScale})` }} />
       </div>
-      <div className={`topbar__row${isMobile ? ' topbar__row--mobile' : ''}`}>
-        {isMobile ? (
+      <div className={rowClassName}>
+        {isCompactLayout ? (
           <>
+            <div
+              className={`topbar__mobile-bar topbar__compact-bar${
+                isPhoneLayout ? ' topbar__compact-bar--phone' : ' topbar__compact-bar--tablet'
+              }`}
+            >
             <div className="topbar__mobile-bar">
               <button
                 type="button"
@@ -232,6 +260,21 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
               >
                 <FiMenu size={20} />
               </button>
+              <div className="topbar__compact-titles">
+                <span className="topbar__compact-eyebrow">لوحة التحكم</span>
+                <h1 className="topbar__mobile-title topbar__compact-title">التقرير العام</h1>
+                {!isPhoneLayout ? (
+                  <p className="topbar__compact-subtitle">متابعة الأداء وملخص العمليات اليومية</p>
+                ) : null}
+              </div>
+              <div
+                className={`topbar__mobile-actions topbar__compact-actions${
+                  isPhoneLayout ? ' topbar__compact-actions--phone' : ' topbar__compact-actions--tablet'
+                }`}
+              >
+                {!isPhoneLayout ? (
+                  <div className="topbar__compact-search">{searchNode}</div>
+                ) : null}
               <h1 className="topbar__mobile-title">التقرير العام</h1>
               <div className="topbar__mobile-actions">
                 <div className="topbar__settings" ref={settingsRef}>

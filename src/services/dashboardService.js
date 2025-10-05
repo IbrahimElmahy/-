@@ -1,8 +1,8 @@
 ﻿import { dashboardMock } from '../data/mockDashboard'
 
 /**
- * Placeholder service that mimics the backend response.
- * Replace the timeout + mock with a real fetch call when the API is ready.
+ * خدمة تجريبية تحاكي استجابة الواجهة الخلفية.
+ * عند توفر واجهة برمجية حقيقية يمكن استبدال المؤقت والبيانات الوهمية بطلب فعلي.
  */
 export const fetchDashboardMetrics = async () => {
   return new Promise((resolve) => {
