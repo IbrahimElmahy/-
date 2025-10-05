@@ -21,7 +21,8 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   const [isCompact, setIsCompact] = useState(false)
   const [isSolid, setIsSolid] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isCompactLayout, setIsCompactLayout] = useState(false)
+  const [isPhoneLayout, setIsPhoneLayout] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const searchInputRef = useRef(null)
@@ -52,8 +53,11 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
 
     const updateLayout = () => {
       const width = window.innerWidth
-      setIsCompactLayout(width <= 1200)
-      setIsPhoneLayout(width <= 768)
+      const compact = width <= 1200
+      const phone = width <= 768
+
+      setIsCompactLayout(compact)
+      setIsPhoneLayout(phone)
     }
 
     updateLayout()
@@ -65,16 +69,16 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   }, [])
 
   useEffect(() => {
-    if (!isMobile) {
+    if (!isCompactLayout) {
       setIsSettingsOpen(false)
     }
-  }, [isMobile])
+  }, [isCompactLayout])
 
   useEffect(() => {
-    if (isMobile) {
+    if (isCompactLayout) {
       setIsSearchOpen(false)
     }
-  }, [isMobile])
+  }, [isCompactLayout])
 
   useEffect(() => {
     const heroBreak = 38 - scrollProgress * 16
