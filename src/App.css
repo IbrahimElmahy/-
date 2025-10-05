@@ -805,7 +805,7 @@
 @media (max-width: 1200px) {
   .app-shell {
     flex-direction: column;
-    padding: 0 16px 16px;
+    padding: 0 0 16px;
   }
 
   .sidebar--compact {
@@ -865,6 +865,18 @@
 }
 
 @media (max-width: 768px) {
+  .app-shell {
+    padding: 0 0 12px;
+  }
+
+  .dashboard__grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .dashboard__grid--two {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
   .topbar--hero {
     top: 0;
     padding: 24px;
