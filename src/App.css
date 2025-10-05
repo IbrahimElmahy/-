@@ -836,6 +836,20 @@
     justify-content: flex-end;
   }
 
+  .sidebar__icon-button {
+    width: auto;
+    justify-content: flex-start;
+    gap: 12px;
+    padding-inline: 16px;
+  }
+
+  .sidebar__label {
+    opacity: 1;
+    transform: none;
+    max-width: none;
+    pointer-events: auto;
+  }
+
   .topbar__actions {
     flex-wrap: wrap;
     justify-content: flex-start;
