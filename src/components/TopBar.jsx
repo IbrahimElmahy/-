@@ -21,8 +21,7 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   const [isCompact, setIsCompact] = useState(false)
   const [isSolid, setIsSolid] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isCompactLayout, setIsCompactLayout] = useState(false)
-  const [isPhoneLayout, setIsPhoneLayout] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const searchInputRef = useRef(null)
@@ -66,16 +65,16 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   }, [])
 
   useEffect(() => {
-    if (!isCompactLayout) {
+    if (!isMobile) {
       setIsSettingsOpen(false)
     }
-  }, [isCompactLayout])
+  }, [isMobile])
 
   useEffect(() => {
-    if (isPhoneLayout) {
+    if (isMobile) {
       setIsSearchOpen(false)
     }
-  }, [isPhoneLayout])
+  }, [isMobile])
 
   useEffect(() => {
     const heroBreak = 38 - scrollProgress * 16
@@ -233,11 +232,7 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
       <div className={rowClassName}>
         {isCompactLayout ? (
           <>
-            <div
-              className={`topbar__mobile-bar topbar__compact-bar${
-                isPhoneLayout ? ' topbar__compact-bar--phone' : ' topbar__compact-bar--tablet'
-              }`}
-            >
+            <div className="topbar__mobile-bar">
               <button
                 type="button"
                 className={`topbar__menu${isSidebarOpen ? ' is-active' : ''}`}
@@ -248,21 +243,8 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
               >
                 <FiMenu size={20} />
               </button>
-              <div className="topbar__compact-titles">
-                <span className="topbar__compact-eyebrow">لوحة التحكم</span>
-                <h1 className="topbar__mobile-title topbar__compact-title">التقرير العام</h1>
-                {!isPhoneLayout ? (
-                  <p className="topbar__compact-subtitle">متابعة الأداء وملخص العمليات اليومية</p>
-                ) : null}
-              </div>
-              <div
-                className={`topbar__mobile-actions topbar__compact-actions${
-                  isPhoneLayout ? ' topbar__compact-actions--phone' : ' topbar__compact-actions--tablet'
-                }`}
-              >
-                {!isPhoneLayout ? (
-                  <div className="topbar__compact-search">{searchNode}</div>
-                ) : null}
+              <h1 className="topbar__mobile-title">التقرير العام</h1>
+              <div className="topbar__mobile-actions">
                 <div className="topbar__settings" ref={settingsRef}>
                   <button
                     type="button"
