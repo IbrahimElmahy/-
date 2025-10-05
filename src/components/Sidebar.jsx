@@ -8,6 +8,7 @@ import {
   FiUsers,
   FiHelpCircle,
   FiLogOut,
+  FiX,
 } from 'react-icons/fi'
 
 const primaryMenu = [
@@ -25,54 +26,82 @@ const utilityMenu = [
   { id: 'logout', icon: FiLogOut, label: 'تسجيل الخروج' },
 ]
 
-const Sidebar = () => {
-  return (
-    <aside className="sidebar sidebar--compact" aria-label="القائمة الرئيسية">
-      <div className="sidebar__top">
-        <div className="sidebar__brand-icon" aria-label="الشعار">
-          <img src="/logo-sm.png" alt="شعار النظام" />
-        </div>
-      </div>
+const Sidebar = ({ isMobile, isMobileOpen, onClose }) => {
+  const sidebarClassName = [
+    'sidebar',
+    'sidebar--compact',
+    isMobile ? 'sidebar--drawer' : '',
+    isMobile && isMobileOpen ? 'sidebar--mobile-open' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
-      <span className="sidebar__separator" aria-hidden="true" />
-      <nav className="sidebar__nav" aria-label="القائمة الرئيسية">
-        {primaryMenu.map((item) => {
-          const Icon = item.icon
-          return (
-            <button
-              key={item.id}
-              type="button"
-              title={item.label}
-              className={`sidebar__icon-button${item.active ? ' is-active' : ''}`}
-              aria-label={item.label}
-            >
-              <span className="sidebar__icon-indicator" aria-hidden="true" />
-              <Icon size={20} />
-              <span className="sidebar__label">{item.label}</span>
+  return (
+    <>
+      {isMobile ? (
+        <div
+          className={`sidebar__backdrop${isMobileOpen ? ' is-visible' : ''}`}
+          aria-hidden="true"
+          onClick={onClose}
+        />
+      ) : null}
+      <aside
+        id="app-sidebar"
+        className={sidebarClassName}
+        aria-label="القائمة الرئيسية"
+        aria-hidden={isMobile ? !isMobileOpen : false}
+      >
+        <div className="sidebar__top">
+          <div className="sidebar__brand-icon" aria-label="الشعار">
+            <img src="/logo-sm.png" alt="شعار النظام" />
+          </div>
+          {isMobile ? (
+            <button type="button" className="sidebar__close" aria-label="إغلاق القائمة" onClick={onClose}>
+              <FiX size={18} />
             </button>
-          )
-        })}
-      </nav>
-      <span className="sidebar__separator sidebar__separator--muted" aria-hidden="true" />
-      <div className="sidebar__bottom" aria-label="خيارات إضافية">
-        {utilityMenu.map((item) => {
-          const Icon = item.icon
-          return (
-            <button
-              key={item.id}
-              type="button"
-              className="sidebar__icon-button"
-              title={item.label}
-              aria-label={item.label}
-            >
-              <span className="sidebar__icon-indicator" aria-hidden="true" />
-              <Icon size={20} />
-              <span className="sidebar__label">{item.label}</span>
-            </button>
-          )
-        })}
-      </div>
-    </aside>
+          ) : null}
+        </div>
+
+        <span className="sidebar__separator" aria-hidden="true" />
+        <nav className="sidebar__nav" aria-label="القائمة الرئيسية">
+          {primaryMenu.map((item) => {
+            const Icon = item.icon
+            return (
+              <button
+                key={item.id}
+                type="button"
+                title={item.label}
+                className={`sidebar__icon-button${item.active ? ' is-active' : ''}`}
+                aria-label={item.label}
+              >
+                <span className="sidebar__icon-indicator" aria-hidden="true" />
+                <Icon size={20} />
+                <span className="sidebar__label">{item.label}</span>
+              </button>
+            )
+          })}
+        </nav>
+        <span className="sidebar__separator sidebar__separator--muted" aria-hidden="true" />
+        <div className="sidebar__bottom" aria-label="خيارات إضافية">
+          {utilityMenu.map((item) => {
+            const Icon = item.icon
+            return (
+              <button
+                key={item.id}
+                type="button"
+                className="sidebar__icon-button"
+                title={item.label}
+                aria-label={item.label}
+              >
+                <span className="sidebar__icon-indicator" aria-hidden="true" />
+                <Icon size={20} />
+                <span className="sidebar__label">{item.label}</span>
+              </button>
+            )
+          })}
+        </div>
+      </aside>
+    </>
   )
 }
 

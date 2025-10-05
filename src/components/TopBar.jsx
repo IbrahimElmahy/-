@@ -4,6 +4,7 @@ import {
   FiCalendar,
   FiChevronDown,
   FiGrid,
+  FiMenu,
   FiMessageCircle,
   FiMoon,
   FiSearch,
@@ -13,7 +14,7 @@ import {
 } from 'react-icons/fi'
 import { useTheme } from '../hooks/useTheme'
 
-const TopBar = () => {
+const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   const { isDark, toggleTheme } = useTheme()
   const [scrollProgress, setScrollProgress] = useState(0)
   const [isCompact, setIsCompact] = useState(false)
@@ -161,7 +162,17 @@ const TopBar = () => {
         {isMobile ? (
           <>
             <div className="topbar__mobile-bar">
-              <h1 className="topbar__mobile-title">General Report</h1>
+              <button
+                type="button"
+                className={`topbar__menu${isSidebarOpen ? ' is-active' : ''}`}
+                aria-label={isSidebarOpen ? 'إغلاق القائمة الجانبية' : 'فتح القائمة الجانبية'}
+                aria-controls="app-sidebar"
+                aria-expanded={isSidebarOpen}
+                onClick={onToggleSidebar}
+              >
+                <FiMenu size={20} />
+              </button>
+              <h1 className="topbar__mobile-title">التقرير العام</h1>
               <div className="topbar__mobile-actions">
                 {searchNode}
                 <button
@@ -199,7 +210,7 @@ const TopBar = () => {
               <span className="topbar__chevron">›</span>
               <span>لوحات التحكم</span>
               <span className="topbar__chevron">›</span>
-              <strong>تحليلات</strong>
+              <strong>التقرير العام</strong>
             </div>
             <div className="topbar__actions">
               <div className="topbar__quick-actions" role="group">
