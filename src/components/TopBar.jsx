@@ -23,6 +23,7 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isCompactLayout, setIsCompactLayout] = useState(false)
   const [isPhoneLayout, setIsPhoneLayout] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const searchInputRef = useRef(null)
@@ -76,6 +77,16 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
       setIsSearchOpen(false)
     }
   }, [isPhoneLayout])
+    if (!isMobile) {
+      setIsSettingsOpen(false)
+    }
+  }, [isMobile])
+
+  useEffect(() => {
+    if (isMobile) {
+      setIsSearchOpen(false)
+    }
+  }, [isMobile])
 
   useEffect(() => {
     const heroBreak = 38 - scrollProgress * 16
@@ -238,6 +249,7 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
                 isPhoneLayout ? ' topbar__compact-bar--phone' : ' topbar__compact-bar--tablet'
               }`}
             >
+            <div className="topbar__mobile-bar">
               <button
                 type="button"
                 className={`topbar__menu${isSidebarOpen ? ' is-active' : ''}`}
@@ -263,6 +275,8 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
                 {!isPhoneLayout ? (
                   <div className="topbar__compact-search">{searchNode}</div>
                 ) : null}
+              <h1 className="topbar__mobile-title">التقرير العام</h1>
+              <div className="topbar__mobile-actions">
                 <div className="topbar__settings" ref={settingsRef}>
                   <button
                     type="button"
