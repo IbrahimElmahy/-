@@ -8,6 +8,7 @@ import {
   FiMessageCircle,
   FiMoon,
   FiSearch,
+  FiSettings,
   FiSun,
   FiUser,
   FiX,
@@ -21,10 +22,12 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
   const [isSolid, setIsSolid] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const searchInputRef = useRef(null)
   const searchToggleRef = useRef(null)
   const hasMountedRef = useRef(false)
+  const settingsRef = useRef(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,6 +63,18 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
       mediaQuery.removeEventListener('change', updateMatches)
     }
   }, [])
+
+  useEffect(() => {
+    if (!isMobile) {
+      setIsSettingsOpen(false)
+    }
+  }, [isMobile])
+
+  useEffect(() => {
+    if (isMobile) {
+      setIsSearchOpen(false)
+    }
+  }, [isMobile])
 
   useEffect(() => {
     const heroBreak = 38 - scrollProgress * 16
@@ -102,8 +117,53 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isSearchOpen])
 
+  useEffect(() => {
+    if (isSearchOpen) {
+      setIsSettingsOpen(false)
+    }
+  }, [isSearchOpen])
+
+  useEffect(() => {
+    if (!isSettingsOpen) return
+
+    const handlePointerDown = (event) => {
+      if (!settingsRef.current?.contains(event.target)) {
+        setIsSettingsOpen(false)
+      }
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsSettingsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handlePointerDown)
+    document.addEventListener('touchstart', handlePointerDown)
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown)
+      document.removeEventListener('touchstart', handlePointerDown)
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isSettingsOpen])
+
   const toggleSearch = useCallback(() => {
     setIsSearchOpen((prev) => !prev)
+  }, [])
+
+  const toggleSettings = useCallback(() => {
+    setIsSettingsOpen((prev) => !prev)
+  }, [])
+
+  const handleThemeToggle = useCallback(() => {
+    toggleTheme()
+    setIsSettingsOpen(false)
+  }, [toggleTheme])
+
+  const handleSettingsItemClick = useCallback(() => {
+    setIsSettingsOpen(false)
   }, [])
 
   const headerClassName = useMemo(() => {
@@ -174,32 +234,101 @@ const TopBar = ({ onToggleSidebar = () => {}, isSidebarOpen = false }) => {
               </button>
               <h1 className="topbar__mobile-title">التقرير العام</h1>
               <div className="topbar__mobile-actions">
-                {searchNode}
-                <button
-                  type="button"
-                  className="topbar__round topbar__round--compact"
-                  aria-label={isDark ? 'الوضع الفاتح' : 'الوضع الليلي'}
-                  onClick={toggleTheme}
-                >
-                  {isDark ? <FiSun size={18} /> : <FiMoon size={18} />}
-                </button>
-                <button type="button" className="topbar__avatar" aria-label="الملف الشخصي">
-                  <FiUser size={18} />
-                </button>
-              </div>
-            </div>
-            <div className="topbar__mobile-tools">
-              <div className="topbar__quick-actions topbar__quick-actions--mobile" role="group">
-                <button type="button" className="topbar__round topbar__round--compact" aria-label="عرض الشبكة">
-                  <FiGrid size={18} />
-                </button>
-                <button type="button" className="topbar__round topbar__round--compact" aria-label="الرسائل">
-                  <FiMessageCircle size={18} />
-                </button>
-                <button type="button" className="topbar__round topbar__round--compact" aria-label="الإشعارات">
-                  <FiBell size={18} />
-                  <span className="topbar__badge">3</span>
-                </button>
+                <div className="topbar__settings" ref={settingsRef}>
+                  <button
+                    type="button"
+                    className={`topbar__round topbar__round--compact topbar__settings-toggle${
+                      isSettingsOpen ? ' is-open' : ''
+                    }`}
+                    aria-haspopup="true"
+                    aria-expanded={isSettingsOpen}
+                    aria-controls="topbar-settings-panel"
+                    onClick={toggleSettings}
+                    aria-label={isSettingsOpen ? 'إغلاق إعدادات العنوان' : 'فتح إعدادات العنوان'}
+                  >
+                    <FiSettings size={18} />
+                  </button>
+                  <div
+                    id="topbar-settings-panel"
+                    className={`topbar__settings-panel${isSettingsOpen ? ' is-visible' : ''}`}
+                    role="menu"
+                  >
+                    <div className="topbar__settings-group" role="none">
+                      <span className="topbar__settings-title">بحث سريع</span>
+                      <div className="topbar__settings-search">
+                        <FiSearch size={18} aria-hidden="true" />
+                        <input type="search" aria-label="ابحث في النظام" placeholder="ابحث في النظام..." />
+                      </div>
+                    </div>
+                    <div className="topbar__settings-group" role="none">
+                      <span className="topbar__settings-title">إجراءات سريعة</span>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label="اختصارات لوحة التحكم"
+                        onClick={handleSettingsItemClick}
+                      >
+                        <FiGrid size={18} />
+                        <span>اختصارات</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label="الرسائل الواردة"
+                        onClick={handleSettingsItemClick}
+                      >
+                        <FiMessageCircle size={18} />
+                        <span>الرسائل</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label="التنبيهات الجديدة"
+                        onClick={handleSettingsItemClick}
+                      >
+                        <FiBell size={18} />
+                        <span>الإشعارات</span>
+                        <span className="topbar__settings-badge">3</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label="مواعيد التقويم"
+                        onClick={handleSettingsItemClick}
+                      >
+                        <FiCalendar size={18} />
+                        <span>التقويم</span>
+                      </button>
+                    </div>
+                    <div className="topbar__settings-group" role="none">
+                      <span className="topbar__settings-title">المظهر والحساب</span>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label={isDark ? 'التبديل إلى الوضع الفاتح' : 'التبديل إلى الوضع الليلي'}
+                        onClick={handleThemeToggle}
+                      >
+                        {isDark ? <FiSun size={18} /> : <FiMoon size={18} />}
+                        <span>{isDark ? 'الوضع الفاتح' : 'الوضع الليلي'}</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="topbar__settings-item"
+                        role="menuitem"
+                        aria-label="الملف الشخصي"
+                        onClick={handleSettingsItemClick}
+                      >
+                        <FiUser size={18} />
+                        <span>حسابي</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </>
