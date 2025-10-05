@@ -78,6 +78,20 @@
   gap: 14px;
 }
 
+.sidebar,
+.sidebar--compact,
+.sidebar--drawer {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar::-webkit-scrollbar,
+.sidebar--compact::-webkit-scrollbar,
+.sidebar--drawer::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 .sidebar--compact {
   width: 96px;
   flex-shrink: 0;

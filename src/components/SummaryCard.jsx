@@ -1,13 +1,14 @@
 ﻿import { FiMoreVertical } from 'react-icons/fi'
 
-const SummaryCard = ({ title, value, icon: Icon, accent, badge }) => {
+const SummaryCard = (props) => {
+  const { title, value, icon: IconComponent, accent, badge } = props
   const accentSoft = `${accent}1a`
 
   return (
     <article className="card summary-card" style={{ '--accent': accent, '--accent-soft': accentSoft }}>
       <div className="summary-card__header">
         <div className="summary-card__icon">
-          <Icon size={20} />
+          <IconComponent size={20} />
         </div>
         <button type="button" className="summary-card__menu" aria-label="المزيد">
           <FiMoreVertical size={18} />
