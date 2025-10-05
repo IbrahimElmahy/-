@@ -38,6 +38,34 @@ const Dashboard = () => {
 
   return (
     <section className="dashboard">
+      <header className="dashboard__header">
+        <div className="dashboard__header-bar">
+          <div className="dashboard__title-group">
+            <span className="dashboard__eyebrow">Overview</span>
+            <h1 className="dashboard__title">General Report</h1>
+          </div>
+          <button type="button" className="dashboard__range-button">
+            Last 30 days
+          </button>
+        </div>
+
+        <div className="dashboard__cta">
+          <div className="dashboard__cta-content">
+            <span className="dashboard__cta-eyebrow">Stay ahead</span>
+            <h2 className="dashboard__cta-title">Track performance across every property</h2>
+            <p className="dashboard__cta-subtitle">
+              Review occupancy, revenue, and guest satisfaction in one unified view to anticipate
+              demand and keep your team aligned.
+            </p>
+            <div className="dashboard__cta-actions">
+              <button type="button" className="dashboard__cta-button">
+                View insights
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
       <div className="dashboard__summary-wrapper">
         <div className="dashboard__summary">
           {data.summaryCards.map((card) => {
