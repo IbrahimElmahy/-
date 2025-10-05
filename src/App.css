@@ -482,7 +482,7 @@
   font-size: 20px;
   font-weight: 600;
   color: var(--color-text-strong);
-  flex: 1 1 auto;
+  flex: 1;
   text-align: right;
 }
 
@@ -491,7 +491,34 @@
   align-items: center;
   justify-content: flex-end;
   flex: 0 0 auto;
-  gap: 10px;
+}
+
+.topbar__menu {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  border: none;
+  background: var(--topbar-button-gradient);
+  color: var(--topbar-text-color);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--topbar-button-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topbar__menu:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--topbar-button-hover-shadow);
+}
+
+.topbar__menu:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(148, 163, 255, 0.3), var(--topbar-button-shadow);
+}
+
+.topbar__menu.is-active {
+  box-shadow: var(--topbar-button-hover-shadow);
 }
 
 .topbar__settings {
