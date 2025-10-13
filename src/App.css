@@ -1,0 +1,122 @@
+@media (min-width: 992px) {
+  body[data-sidebar-size="default"] .modal-eModal {
+    margin-right: 150px;
+  }
+}
+
+body[data-sidebar-size="condensed"] .left-side-menu {
+  overflow: visible;
+}
+
+body[data-sidebar-size="condensed"] .left-side-menu #sidebar-menu > ul > li > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body[data-sidebar-size="condensed"] .left-side-menu #sidebar-menu > ul > li > a i {
+  display: inline-block;
+  font-size: 20px;
+  margin: 0;
+  width: auto;
+}
+
+body[data-sidebar-size="condensed"] .left-side-menu #sidebar-menu > ul > li > a span {
+  display: none;
+}
+
+body[data-sidebar-size="condensed"] .left-side-menu #sidebar-menu > ul > li:hover > a {
+  justify-content: flex-start;
+}
+
+body[data-sidebar-size="condensed"] .left-side-menu #sidebar-menu > ul > li:hover > a span {
+  display: inline;
+}
+
+.left-side-menu i.fe {
+  font-family: 'Feather' !important;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+}
+
+.left-side-menu i.mdi {
+  font-family: 'Material Design Icons' !important;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+}
+
+.summary-card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(50, 58, 70, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 32px rgba(50, 58, 70, 0.12);
+}
+
+.summary-card-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #323a46;
+}
+
+.summary-card-label {
+  font-size: 14px;
+}
+
+.summary-card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.summary-card-icon i {
+  font-size: 22px;
+  color: #fff;
+}
+
+.dashboard-page {
+  background-color: #f4f5f7;
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+.dashboard-page .card:not(.summary-card) {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 6px 30px rgba(50, 58, 70, 0.08);
+}
+
+.dashboard-page .card .card-widgets a {
+  color: #98a6ad;
+  margin-left: 8px;
+  transition: color 0.2s ease;
+}
+
+.dashboard-page .card .card-widgets a:hover {
+  color: #6658dd;
+}
+
+.dashboard-page .header-title {
+  font-weight: 600;
+  color: #323a46;
+}
+
+.dashboard-page .morris-chart {
+  max-width: 100%;
+}

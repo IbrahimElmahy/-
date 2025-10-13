@@ -1,0 +1,84 @@
+/* Container for the month selection */
+.flatpickr-monthSelect-months {
+  margin: 10px 1px 3px 1px;
+  flex-wrap: wrap;
+  background-color: #2c2f39; /* Darker shade for the background */
+}
+
+/* Styles for each month block */
+.flatpickr-monthSelect-month {
+  background: none;
+  border: 0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: #fff; /* White text color to contrast the dark background */
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 400;
+  margin: 0.5px;
+  justify-content: center;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+  width: 33%;
+  font-size: 16px; /* Adjusted font size */
+}
+
+/* Styles for disabled months */
+.flatpickr-monthSelect-month.disabled {
+  color: #aaa; /* Lighter color for disabled state */
+}
+
+.flatpickr-monthSelect-month.disabled:hover,
+.flatpickr-monthSelect-month.disabled:focus {
+  background: none !important;
+}
+
+/* Styling for the current year's input in dark theme */
+.flatpickr-monthSelect-theme-dark .flatpickr-current-month {
+  background: #2c2f39; /* Ensure this is the same background color */
+  color: #fff; /* White text color */
+  padding: 10px; /* Add padding to make space for the text */
+  border: none; /* Remove any borders */
+  border-radius: 4px; /* Add slight rounding for the input */
+  display: flex; /* Allows for alignment of content */
+  justify-content: center; /* Centers the year within the element */
+  align-items: center; /* Aligns content vertically */
+  height: 40px; /* Adjust height as necessary */
+}
+
+/* Styling for navigation arrows in dark theme */
+.flatpickr-monthSelect-theme-dark .flatpickr-prev-month,
+.flatpickr-monthSelect-theme-dark .flatpickr-next-month {
+  color: #fff; /* Ensure the navigation arrows are white */
+  fill: #fff; /* Ensure the fill color of arrows is white */
+  cursor: pointer; /* Change cursor to pointer */
+  padding: 5px; /* Add padding around arrows */
+  font-size: 1.5em; /* Adjust size of navigation arrows */
+}
+
+.flatpickr-monthSelect-theme-dark .flatpickr-prev-month:hover,
+.flatpickr-monthSelect-theme-dark .flatpickr-next-month:hover {
+  color: #80cbc4; /* Hover color for navigation arrows */
+  fill: #80cbc4; /* Hover fill color for navigation arrows */
+}
+
+/* Styles when a month is hovered or focused */
+.flatpickr-monthSelect-month:hover,
+.flatpickr-monthSelect-month:focus {
+  background: #3f4458; /* Slightly darker background on hover */
+  cursor: pointer;
+}
+
+/* Styling for selected month */
+.flatpickr-monthSelect-month.selected {
+  background-color: #569ff7; /* Blue background for selected month */
+  color: #fff; /* White text for selected month */
+}
+
+/* Styling for selected month in dark theme */
+.flatpickr-monthSelect-theme-dark .flatpickr-monthSelect-month.selected {
+  background: #569ff7; /* Same blue background for selected month */
+  box-shadow: none;
+  color: #fff; /* White text for selected month */
+}
