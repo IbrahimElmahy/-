@@ -13,34 +13,14 @@ function LoginPage() {
     import.meta.env.VITE_BASE_URL ||
     'https://www.osusideas.online';
 
+  const loginBaseUrl =
+    import.meta.env.VITE_LOGIN_BASE_URL ||
+    (import.meta.env.DEV ? backendBaseUrl : '/api');
+
   const buildEndpoint = (base, path) => {
     const normalizedBase = base.replace(/\/$/, '');
     return `${normalizedBase}${path}`;
   };
-
-  const loginEndpoint = (() => {
-    const configuredBase = import.meta.env.VITE_LOGIN_BASE_URL;
-    const configuredEndpoint = import.meta.env.VITE_LOGIN_ENDPOINT;
-
-    if (configuredEndpoint) {
-      return configuredEndpoint;
-    }
-
-    if (configuredBase) {
-      return buildEndpoint(configuredBase, '/ar/auth/api/sessions/login/');
-    }
-
-    if (import.meta.env.DEV) {
-      return buildEndpoint(backendBaseUrl, '/ar/auth/api/sessions/login/');
-    }
-
-    return '/api/login';
-  })();
-
-  const shouldUseProxy =
-    !import.meta.env.DEV &&
-    !/^https?:/i.test(loginEndpoint) &&
-    loginEndpoint.startsWith('/api');
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -52,17 +32,16 @@ function LoginPage() {
 
     setIsSubmitting(true);
     try {
-      const payload = shouldUseProxy
-        ? { role: 'hotel', username, password }
-        : (() => {
-            const formData = new FormData();
-            formData.append('role', 'hotel');
-            formData.append('username', username);
-            formData.append('password', password);
-            return formData;
-          })();
+      const formData = new FormData();
+      formData.append('role', 'hotel');
+      formData.append('username', username);
+      formData.append('password', password);
 
-      const response = await axios.post(loginEndpoint, payload);
+      const loginUrl = buildEndpoint(loginBaseUrl, '/ar/auth/api/sessions/login/');
+
+      const response = await axios.post(loginUrl, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
       const {
         access_token: accessToken,
@@ -78,9 +57,9 @@ function LoginPage() {
       if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('userProfile', JSON.stringify(profile));
       localStorage.setItem('apiBaseUrl', backendBaseUrl);
-      localStorage.setItem('apiLoginEndpoint', loginEndpoint);
+      localStorage.setItem('apiLoginBaseUrl', loginBaseUrl);
 
-      axios.defaults.baseURL = backendBaseUrl;
+      axios.defaults.baseURL = loginBaseUrl;
       axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
       navigate('/dashboard');
