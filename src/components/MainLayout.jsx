@@ -452,26 +452,25 @@ function MainLayout() {
           if (src.includes('/assets/js/pages/admin/index.init.js')) {
             indexInitLoaded = true;
           }
-          // eslint-disable-next-line no-continue
-          continue;
+        } else {
+          await new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = false;
+            script.onload = () => {
+              if (src.includes('/assets/js/component/stats.js')) {
+                applyMockStats();
+              }
+              if (src.includes('/assets/js/pages/admin/index.init.js')) {
+                indexInitLoaded = true;
+              }
+              resolve();
+            };
+            script.onerror = reject;
+            document.body.appendChild(script);
+            appendedScripts.push(script);
+          });
         }
-        await new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          script.src = src;
-          script.async = false;
-          script.onload = () => {
-            if (src.includes('/assets/js/component/stats.js')) {
-              applyMockStats();
-            }
-            if (src.includes('/assets/js/pages/admin/index.init.js')) {
-              indexInitLoaded = true;
-            }
-            resolve();
-          };
-          script.onerror = reject;
-          document.body.appendChild(script);
-          appendedScripts.push(script);
-        });
       }
     };
 
@@ -532,6 +531,10 @@ function MainLayout() {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userProfile');
+    localStorage.removeItem('apiBaseUrl');
+    localStorage.removeItem('apiLoginEndpoint');
     navigate('/login');
   };
 
