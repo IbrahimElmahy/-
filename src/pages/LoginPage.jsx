@@ -22,6 +22,43 @@ function LoginPage() {
     return `${normalizedBase}${path}`;
   };
 
+  const isAbsoluteUrl = (value) => /^https?:\/\//i.test(value ?? '');
+
+  const loginEndpoint = (() => {
+    const configuredEndpoint = import.meta.env.VITE_LOGIN_ENDPOINT?.trim();
+    if (configuredEndpoint) {
+      return configuredEndpoint;
+    }
+
+    const configuredBase = import.meta.env.VITE_LOGIN_BASE_URL?.trim();
+    if (configuredBase) {
+      if (isAbsoluteUrl(configuredBase)) {
+        return buildEndpoint(configuredBase, '/ar/auth/api/sessions/login/');
+      }
+
+      console.warn(
+        'Ignoring VITE_LOGIN_BASE_URL because it is not an absolute URL:',
+        configuredBase,
+      );
+    }
+
+    if (import.meta.env.DEV) {
+      return buildEndpoint(backendBaseUrl, '/ar/auth/api/sessions/login/');
+    }
+
+    return '/api/login';
+  })();
+
+  const shouldUseProxy = !import.meta.env.DEV && loginEndpoint === '/api/login';
+
+  console.info(
+    '[Login] اختيار نقطة الدخول',
+    loginEndpoint,
+    shouldUseProxy ? '(عبر البروكسي)' : '(اتصال مباشر بالخادم)',
+    '— عنوان الخادم:',
+    backendBaseUrl,
+  );
+
   const handleLogin = async (event) => {
     event.preventDefault();
     if (!username || !password) {
@@ -32,6 +69,17 @@ function LoginPage() {
 
     setIsSubmitting(true);
     try {
+      const payload = shouldUseProxy
+        ? { role: 'hotel', username, password }
+        : (() => {
+            const formData = new FormData();
+            formData.append('role', 'hotel');
+            formData.append('username', username);
+            formData.append('password', password);
+            return formData;
+          })();
+
+      const response = await axios.post(loginEndpoint, payload);
       const formData = new FormData();
       formData.append('role', 'hotel');
       formData.append('username', username);
@@ -57,10 +105,19 @@ function LoginPage() {
       if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('userProfile', JSON.stringify(profile));
       localStorage.setItem('apiBaseUrl', backendBaseUrl);
+      localStorage.setItem('apiLoginEndpoint', loginEndpoint);
+
+      axios.defaults.baseURL = backendBaseUrl;
       localStorage.setItem('apiLoginBaseUrl', loginBaseUrl);
 
       axios.defaults.baseURL = loginBaseUrl;
       axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+
+      console.info('[Login] ✅ تم تأكيد الاتصال بين الواجهة والخادم.', {
+        backendBaseUrl,
+        loginEndpoint,
+        username,
+      });
 
       navigate('/dashboard');
     } catch (error) {

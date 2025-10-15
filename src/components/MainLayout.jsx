@@ -534,6 +534,7 @@ function MainLayout() {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userProfile');
     localStorage.removeItem('apiBaseUrl');
+    localStorage.removeItem('apiLoginEndpoint');
     localStorage.removeItem('apiLoginBaseUrl');
     navigate('/login');
   };
