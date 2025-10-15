@@ -8,7 +8,19 @@ function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const baseURL = import.meta.env.VITE_BASE_URL || 'https://www.osusideas.online';
+  const backendBaseUrl =
+    import.meta.env.VITE_BACKEND_BASE_URL ||
+    import.meta.env.VITE_BASE_URL ||
+    'https://www.osusideas.online';
+
+  const loginBaseUrl =
+    import.meta.env.VITE_LOGIN_BASE_URL ||
+    (import.meta.env.DEV ? backendBaseUrl : '/api');
+
+  const buildEndpoint = (base, path) => {
+    const normalizedBase = base.replace(/\/$/, '');
+    return `${normalizedBase}${path}`;
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -25,7 +37,9 @@ function LoginPage() {
       formData.append('username', username);
       formData.append('password', password);
 
-      const response = await axios.post(`${baseURL}/ar/auth/api/sessions/login/`, formData, {
+      const loginUrl = buildEndpoint(loginBaseUrl, '/ar/auth/api/sessions/login/');
+
+      const response = await axios.post(loginUrl, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
@@ -42,9 +56,10 @@ function LoginPage() {
       localStorage.setItem('authToken', accessToken);
       if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('userProfile', JSON.stringify(profile));
-      localStorage.setItem('apiBaseUrl', baseURL);
+      localStorage.setItem('apiBaseUrl', backendBaseUrl);
+      localStorage.setItem('apiLoginBaseUrl', loginBaseUrl);
 
-      axios.defaults.baseURL = baseURL;
+      axios.defaults.baseURL = loginBaseUrl;
       axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
       navigate('/dashboard');
