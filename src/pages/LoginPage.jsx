@@ -17,6 +17,14 @@ function LoginPage() {
     import.meta.env.VITE_LOGIN_BASE_URL ||
     (import.meta.env.DEV ? backendBaseUrl : '/api');
 
+  const loginProxyPath =
+    import.meta.env.VITE_LOGIN_PROXY_PATH || '/login';
+
+  const loginDirectPath =
+    import.meta.env.VITE_LOGIN_DIRECT_PATH || '/ar/auth/api/sessions/login/';
+
+  const isRelativeUrl = (value) => !/^https?:\/\//i.test(value);
+
   const buildEndpoint = (base, path) => {
     const normalizedBase = base.replace(/\/$/, '');
     return `${normalizedBase}${path}`;
@@ -32,16 +40,29 @@ function LoginPage() {
 
     setIsSubmitting(true);
     try {
-      const formData = new FormData();
-      formData.append('role', 'hotel');
-      formData.append('username', username);
-      formData.append('password', password);
+      const useProxy = isRelativeUrl(loginBaseUrl);
+      const loginPath = useProxy ? loginProxyPath : loginDirectPath;
+      const loginUrl = buildEndpoint(loginBaseUrl, loginPath);
 
-      const loginUrl = buildEndpoint(loginBaseUrl, '/ar/auth/api/sessions/login/');
+      let requestBody;
+      const requestConfig = {};
 
-      const response = await axios.post(loginUrl, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      if (useProxy) {
+        requestBody = {
+          role: 'hotel',
+          username,
+          password,
+        };
+      } else {
+        const formData = new FormData();
+        formData.append('role', 'hotel');
+        formData.append('username', username);
+        formData.append('password', password);
+        requestBody = formData;
+        requestConfig.headers = { 'Content-Type': 'multipart/form-data' };
+      }
+
+      const response = await axios.post(loginUrl, requestBody, requestConfig);
 
       const {
         access_token: accessToken,
