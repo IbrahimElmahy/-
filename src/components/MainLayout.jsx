@@ -535,6 +535,7 @@ function MainLayout() {
     localStorage.removeItem('userProfile');
     localStorage.removeItem('apiBaseUrl');
     localStorage.removeItem('apiLoginEndpoint');
+    localStorage.removeItem('apiLoginBaseUrl');
     navigate('/login');
   };
 

@@ -13,6 +13,10 @@ function LoginPage() {
     import.meta.env.VITE_BASE_URL ||
     'https://www.osusideas.online';
 
+  const loginBaseUrl =
+    import.meta.env.VITE_LOGIN_BASE_URL ||
+    (import.meta.env.DEV ? backendBaseUrl : '/api');
+
   const buildEndpoint = (base, path) => {
     const normalizedBase = base.replace(/\/$/, '');
     return `${normalizedBase}${path}`;
@@ -76,6 +80,16 @@ function LoginPage() {
           })();
 
       const response = await axios.post(loginEndpoint, payload);
+      const formData = new FormData();
+      formData.append('role', 'hotel');
+      formData.append('username', username);
+      formData.append('password', password);
+
+      const loginUrl = buildEndpoint(loginBaseUrl, '/ar/auth/api/sessions/login/');
+
+      const response = await axios.post(loginUrl, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
       const {
         access_token: accessToken,
@@ -94,6 +108,9 @@ function LoginPage() {
       localStorage.setItem('apiLoginEndpoint', loginEndpoint);
 
       axios.defaults.baseURL = backendBaseUrl;
+      localStorage.setItem('apiLoginBaseUrl', loginBaseUrl);
+
+      axios.defaults.baseURL = loginBaseUrl;
       axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
       console.info('[Login] ✅ تم تأكيد الاتصال بين الواجهة والخادم.', {
